@@ -3,28 +3,25 @@
   line-height: 1.5;
   font-weight: 400;
 
-  background-color: #FDFDFD;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Playfair Display', serif;
 
+  --cream-white: #f9f8f6;
+  --charcoal: #2e2e2e;
+  --dusty-rose: #d97c93;
+  --lavender: #9f96c2;
+  --soft-orange: #f9a03f;
+  --sunflower-yellow: #f5d76e;
+  --sage-green: #a4c2a5;
+  --sky-blue: #a3cce2;
+  --coral-pink: #ef798a;
+  --marigold-orange: #f68e5f;
+  --background: #FDFDFD;
 
-  :root {
-    --cream-white: #f9f8f6;
-    --charcoal: #2e2e2e;
-    --dusty-rose: #d97c93;
-    --lavender: #9f96c2;
-    --soft-orange: #f9a03f;
-    --sunflower-yellow: #f5d76e;
-    --sage-green: #a4c2a5;
-    --sky-blue: #a3cce2;
-    --coral-pink: #ef798a;
-    --marigold-orange: #f68e5f;
-    --background: #FDFDFD;
-  }
+  background-color: var(--background);
 }
 
 
