@@ -2,7 +2,7 @@ import AuthLayout from "../Layout/AuthLayout";
 import style from './SaveTheDate.module.scss';
 
 const SaveTheDate = () => (
-    <AuthLayout title="Save the date">
+    <AuthLayout title="Save the date" wrapperClass={style.wrapper}>
         <h1>Save the date</h1>
         <div className={style.body}>
             <p>Norma and Corey</p>
