@@ -1,14 +1,15 @@
 import './App.css'
-import SaveTheDate from './components/SaveTheData/SaveTheDate'
-import PasswordForm from './components/PasswordForm';
+import PasswordFormPage from './pages/PasswordFormPage';
 import { usePassword } from './hooks/usePassword';
+import PhysicalPage from './pages/Physical';
+import VirtualPage from './pages/Virtual';
 
 
 
 function App() {
-  const { passwordEntered, handleSubmit } = usePassword();
+  const { passwordEntered, handleSubmit, pageToShow } = usePassword();
 
-  return passwordEntered ? <SaveTheDate /> : <PasswordForm handleSubmit={handleSubmit} />
+  return !passwordEntered ? <PasswordFormPage handleSubmit={handleSubmit} /> : pageToShow === "Physical" ? <PhysicalPage /> : <VirtualPage />;
 }
 
 export default App
