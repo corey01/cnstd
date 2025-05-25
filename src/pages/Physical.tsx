@@ -1,4 +1,4 @@
-import SaveTheDate from "../components/SaveTheData/SaveTheDate"
+import SaveTheDate from "../components/SaveTheDate/SaveTheDate"
 import Venue from "../components/Venue/Venue"
 
 const PhysicalPage = () => {
