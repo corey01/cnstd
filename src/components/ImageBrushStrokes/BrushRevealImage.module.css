@@ -1,0 +1,32 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  display: block;
+  aspect-ratio: 4 / 3; /* or passed via inline style */
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+
+.wrapper svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+
+@keyframes fadeInFull {
+  to {
+    opacity: 1;
+  }
+}

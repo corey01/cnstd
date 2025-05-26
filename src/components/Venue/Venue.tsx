@@ -1,3 +1,4 @@
+import BrushRevealImage from '../ImageBrushStrokes/BrushRevealImage';
 import style from './Venue.module.scss';
 
 const Venue = () => {
@@ -10,7 +11,7 @@ const Venue = () => {
 
             <p>Settle is a small, friendly market town in the Yorkshire Dales, surrounded by beautiful countryside and dramatic limestone hills. With its stone buildings, independent shops, and weekly market, it has a warm, relaxed atmosphere – the perfect place to slow down, explore, and enjoy the landscape.</p>
             </div>
-            <img src="/venue.png" alt="Falcon Manor" />
+            <BrushRevealImage image='venue.png' strokes={4} duration={4} />
         </div>
         </div>
     );
