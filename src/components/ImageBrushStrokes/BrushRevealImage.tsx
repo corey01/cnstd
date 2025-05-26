@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import styles from './BrushRevealImage.module.css';
 
 interface BrushRevealImageProps {
@@ -16,32 +16,48 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
   aspectRatio = 4/3,
 }) => {
   const maskId = useId();
-  const containerRef = useRef<HTMLDivElement>(null);
+
   const [showFull, setShowFull] = useState(false);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  // const ref = useRef(null);
 
-  // Dynamically track container size
+const containerRef = useRef<HTMLDivElement>(null);
+const isInView = useInView(containerRef, { once: true, margin: '-10% 0px' });
+
+useEffect(() => {
+  if (!containerRef.current) return;
+
+  const el = containerRef.current;
+  const updateSize = () => {
+    const { width, height } = el.getBoundingClientRect();
+    setSize({ width, height });
+  };
+
+  updateSize(); // initial
+
+  const observer = new ResizeObserver(updateSize);
+  observer.observe(el);
+
+  return () => observer.disconnect();
+}, []);
+
+useEffect(() => {
+  if (!isInView) return;
+
+  const timeout = setTimeout(() => {
+    setShowFull(true);
+  }, duration * 1000);
+
+  return () => clearTimeout(timeout);
+}, [isInView, duration]);
+
+
+
   useEffect(() => {
-    const resize = () => {
-      if (containerRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect();
-        setSize({ width, height });
-      }
-    };
-
-    resize(); // Initial
-    const observer = new ResizeObserver(resize);
-    if (containerRef.current) observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  // Fade in final image after strokes finish
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowFull(true);
-    }, duration * 1000);
+    if (!isInView) return;
+    const timeout = setTimeout(() => setShowFull(true), duration * 1000);
     return () => clearTimeout(timeout);
-  }, [duration]);
+  }, [isInView, duration]);
 
   const brushElements = Array.from({ length: strokes }).map((_, i) => {
     const delay = (duration / strokes) * i;
@@ -93,8 +109,9 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
 <div
   className={styles.wrapper}
   ref={containerRef}
-  style={{ aspectRatio: aspectRatio ? `${aspectRatio}` : undefined }}
+  style={{ aspectRatio: `${aspectRatio}` }}
 >
+
       {size.width > 0 && size.height > 0 && (
         <svg
   viewBox={`0 0 ${size.width} ${size.height}`}
