@@ -16,6 +16,7 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
   aspectRatio = 4 / 3,
 }) => {
   const maskId = useId();
+  const instanceId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-10% 0px' });
   const [showFull, setShowFull] = useState(false);
@@ -72,7 +73,7 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
               transformOrigin: 'top left',
             }}
           >
-            <mask id={`stroke-mask-${i}`}>
+            <mask id={`stroke-mask-${instanceId}-${i}`}>
               <motion.rect
                 initial={
                   direction === 1
@@ -92,7 +93,7 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
               height={h}
               x={0}
               y={0}
-              mask={`url(#stroke-mask-${i})`}
+              mask={`url(#stroke-mask-${instanceId}-${i})`}
               style={{ filter: 'brightness(10000%)' }}
             />
           </motion.g>
