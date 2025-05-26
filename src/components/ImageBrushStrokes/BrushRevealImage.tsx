@@ -6,148 +6,147 @@ interface BrushRevealImageProps {
   image: string;
   strokes?: number;
   duration?: number;
-  aspectRatio?: number; // e.g. 16/9, 4/3
+  aspectRatio?: number;
 }
 
 const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
   image,
   strokes = 6,
   duration = 3,
-  aspectRatio = 4/3,
+  aspectRatio = 4 / 3,
 }) => {
   const maskId = useId();
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: '-10% 0px' });
   const [showFull, setShowFull] = useState(false);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  // const ref = useRef(null);
 
-const containerRef = useRef<HTMLDivElement>(null);
-const isInView = useInView(containerRef, { once: true, margin: '-10% 0px' });
+  // Measure container size
+  useEffect(() => {
+    if (!containerRef.current) return;
 
-useEffect(() => {
-  if (!containerRef.current) return;
+    const updateSize = () => {
+      const { width, height } = containerRef.current!.getBoundingClientRect();
+      setSize({ width, height });
+    };
 
-  const el = containerRef.current;
-  const updateSize = () => {
-    const { width, height } = el.getBoundingClientRect();
-    setSize({ width, height });
-  };
+    updateSize();
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-  updateSize(); // initial
-
-  const observer = new ResizeObserver(updateSize);
-  observer.observe(el);
-
-  return () => observer.disconnect();
-}, []);
-
-useEffect(() => {
-  if (!isInView) return;
-
-  const timeout = setTimeout(() => {
-    setShowFull(true);
-  }, duration * 1000);
-
-  return () => clearTimeout(timeout);
-}, [isInView, duration]);
-
-
-
+  // Fade in full image after brushes finish
   useEffect(() => {
     if (!isInView) return;
     const timeout = setTimeout(() => setShowFull(true), duration * 1000);
     return () => clearTimeout(timeout);
   }, [isInView, duration]);
 
-  const brushElements = Array.from({ length: strokes }).map((_, i) => {
-    const delay = (duration / strokes) * i;
+  const brushElements = isInView
+    ? Array.from({ length: strokes }).map((_, i) => {
+        const delay = (duration / strokes) * i;
 
-    const bandHeight = size.height / strokes;
-    const baseY = bandHeight * i;
-    
-    const w = size.width * 1.2;
-    const h = bandHeight * 1.2;
-    
-    const edgeOffset = 20;
-    const direction = i % 2 === 0 ? 1 : -1;
-    
-    // Flip behavior: both start near the same x, but flipped in place
-    const x = direction === 1
-      ? 0 + Math.random() * edgeOffset
-      : size.width - (Math.random() * edgeOffset) - w;
-    
-    const y = baseY + (bandHeight - h) / 2 + Math.random() * (bandHeight - h) * 0.2;
-    
-    const rot = (Math.random() * 3 - 1.5);
-    // const scale = 0.975 + Math.random() * 0.05;
-    const scale = 1.25 + Math.random() * 0.05;
-    
-    return (
-      <motion.g
-        key={i}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay, duration: 0.5, ease: 'easeOut' }}
-        style={{
-          transform: `translate(${x}px, ${y}px) scaleX(${direction}) rotate(${rot}deg) scale(${scale})`,
-          transformOrigin: 'center',
-        }}
-      >
-        <image
-          href="/images/stroke.png"
-          width={w}
-          height={h}
-          x={0}
-          y={0}
-        />
-      </motion.g>
-    
-    );
-  });
+        const bandHeight = size.height / strokes;
+        const baseY = bandHeight * i;
+
+        const w = size.width * 1.2;
+        const h = bandHeight * 1.2;
+
+        const y =
+          baseY + (bandHeight - h) / 2 + Math.random() * (bandHeight - h) * 0.2;
+        const x = Math.random() * (size.width - w);
+
+        const direction = i % 2 === 0 ? 1 : -1;
+        const rot = (Math.random() * 3 - 1.5);
+        const scale = 0.975 + Math.random() * 0.05;
+
+        return (
+          <motion.g
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay, duration: 0.5 }}
+            style={{
+              transform: `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`,
+              transformOrigin: 'top left',
+            }}
+          >
+            <mask id={`stroke-mask-${i}`}>
+              <motion.rect
+                initial={
+                  direction === 1
+                    ? { width: 0, x: 0 }
+                    : { width: 0, x: w }
+                }
+                animate={{ width: w, x: 0 }}
+                transition={{ delay, duration: 0.5, ease: 'easeOut' }}
+                height={h}
+                fill="white"
+              />
+            </mask>
+
+            <image
+              href="/images/stroke.png"
+              width={w}
+              height={h}
+              x={0}
+              y={0}
+              mask={`url(#stroke-mask-${i})`}
+              style={{ filter: 'brightness(10000%)' }}
+            />
+          </motion.g>
+        );
+      })
+    : [];
 
   return (
-<div
-  className={styles.wrapper}
-  ref={containerRef}
-  style={{ aspectRatio: `${aspectRatio}` }}
->
-
+    <div
+      className={styles.wrapper}
+      ref={containerRef}
+      style={{ aspectRatio: `${aspectRatio}` }}
+    >
       {size.width > 0 && size.height > 0 && (
         <svg
-  viewBox={`0 0 ${size.width} ${size.height}`}
-  width="100%"
-  height="100%"
->
-  <defs>
-    <mask id={maskId}>
-      <rect width="100%" height="100%" fill="black" />
-      {brushElements}
-    </mask>
-  </defs>
+          viewBox={`0 0 ${size.width} ${size.height}`}
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <defs>
+            <mask id={maskId}>
+              <rect width="100%" height="100%" fill="black" />
+              {brushElements}
+            </mask>
+          </defs>
 
-  {/* Masked image */}
-  <image
-    href={image}
-    width="100%"
-    height="100%"
-    mask={`url(#${maskId})`}
-  />
+          {/* Masked image revealed by strokes */}
+          <image
+            href={image}
+            width="100%"
+            height="100%"
+            x={0}
+            y={0}
+            mask={`url(#${maskId})`}
+            preserveAspectRatio="xMidYMid meet"
+          />
 
-  {/* Final image overlay inside same SVG, same space */}
-  {showFull && (
-    <motion.image
-      href={image}
-      width="100%"
-      height="100%"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    />
-  )}
-</svg>
-
+          {/* Final image fade-in over the masked one */}
+          {showFull && (
+            <motion.image
+              href={image}
+              width="100%"
+              height="100%"
+              x={0}
+              y={0}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              preserveAspectRatio="xMidYMid meet"
+            />
+          )}
+        </svg>
       )}
-
     </div>
   );
 };
