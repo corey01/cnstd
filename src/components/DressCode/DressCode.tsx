@@ -17,13 +17,12 @@ const DressCode = () => {
             feels festive and fun.
           </p>
 
-          <BrushRevealImage image="/flowers.png" strokes={5} duration={3} />
-
           <p>
             Dress up in a way that makes you feel great – hats and fascinators
             are welcome but not expected.
           </p>
         </div>
+        <BrushRevealImage image="/flowers.png" strokes={5} duration={3} />
       </div>
     </div>
   );

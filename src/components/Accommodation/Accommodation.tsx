@@ -1,3 +1,5 @@
+import BrushRevealImage from "../ImageBrushStrokes/BrushRevealImage";
+
 const DressCode = () => {
   return (
     <div className="content">
@@ -37,6 +39,7 @@ const DressCode = () => {
             time.
           </p>
         </div>
+        <BrushRevealImage image="/settle.png" />
       </div>
     </div>
   );
