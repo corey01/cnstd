@@ -30,7 +30,7 @@ const OurWedding = () => {
 
           <p>
             A full schedule and RSVP details will be included with your formal
-            invitation.
+            invitation (to follow).
           </p>
         </div>
         <BrushRevealImage image="venue.png" strokes={4} duration={4} />

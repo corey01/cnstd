@@ -1,4 +1,11 @@
 .countdown {
+  .date {
+    color: var(--dusty-rose);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 0 0 0.5em;
+  }
+
   .timeCards {
     display: flex;
     justify-content: center;

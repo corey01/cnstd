@@ -19,7 +19,6 @@ const Hero = () => (
         </p>
       </div>
     </AuthLayout>
-    <p>Formal invitation to follow.</p>
     <WeddingCountdown />
   </>
 );
