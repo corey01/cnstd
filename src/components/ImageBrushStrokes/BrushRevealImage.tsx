@@ -15,95 +15,51 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
   duration = 3,
   aspectRatio = 4 / 3,
 }) => {
-  const instanceId = useId(); // unique per component
+  const instanceId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-10% 0px" });
+  const isInView = useInView(containerRef, {
+    once: true,
+    margin: "0px 0px -20% 0px",
+  });
 
-  const [showFull, setShowFull] = useState(false);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const [showFull, setShowFull] = useState(false);
 
-  // Resize tracking
+  // Track container size
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const updateSize = () => {
-      const { width, height } = containerRef.current!.getBoundingClientRect();
-      setSize({ width, height });
+    const resize = () => {
+      if (containerRef.current) {
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        setSize({ width, height });
+      }
     };
-
-    updateSize();
-    const observer = new ResizeObserver(updateSize);
-    observer.observe(containerRef.current);
+    resize();
+    const observer = new ResizeObserver(resize);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Trigger final image fade-in after brush strokes
   useEffect(() => {
     if (!isInView) return;
     const timeout = setTimeout(() => setShowFull(true), duration * 1000);
     return () => clearTimeout(timeout);
   }, [isInView, duration]);
 
-  // Random stroke layout — memoized per component instance
   const randomBrushData = useMemo(() => {
     if (!size.width || !size.height) return [];
 
     return Array.from({ length: strokes }).map((_, i) => {
       const bandHeight = size.height / strokes;
       const baseY = bandHeight * i;
-
       const w = size.width * 1.2;
       const h = bandHeight * 1.2;
-
       const y =
         baseY + (bandHeight - h) / 2 + Math.random() * (bandHeight - h) * 0.2;
-      const x = Math.random() * (size.width - w);
-
       const direction = i % 2 === 0 ? 1 : -1;
-      const rot = Math.random() * 3 - 1.5;
-      const scale = 0.975 + Math.random() * 0.05;
       const delay = (duration / strokes) * i;
-
-      return { i, x, y, w, h, direction, rot, scale, delay };
+      return { i, w, h, y, direction, delay };
     });
-  }, [size.width, size.height, strokes, duration]);
-
-  const brushElements = isInView
-    ? randomBrushData.map(({ i, x, y, w, h, direction, rot, scale, delay }) => (
-        <motion.g
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay, duration: 0.5 }}
-          style={{
-            transform: `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        >
-          <mask id={`stroke-mask-${instanceId}-${i}`}>
-            <motion.rect
-              initial={
-                direction === 1 ? { width: 0, x: 0 } : { width: 0, x: w }
-              }
-              animate={{ width: w, x: 0 }}
-              transition={{ delay, duration: 0.5, ease: "easeOut" }}
-              height={h}
-              fill="white"
-            />
-          </mask>
-
-          {/* <image
-            href="/images/stroke.png"
-            width={w}
-            height={h}
-            x={0}
-            y={0}
-            mask={`url(#stroke-mask-${instanceId}-${i})`}
-            style={{ filter: 'brightness(10000%)' }}
-          /> */}
-        </motion.g>
-      ))
-    : [];
+  }, [size, strokes, duration]);
 
   return (
     <div
@@ -119,45 +75,40 @@ const BrushRevealImage: React.FC<BrushRevealImageProps> = ({
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
-            <mask id={`stroke-mask-${instanceId}-final`}>
+            <mask id={`stroke-mask-${instanceId}`}>
               <rect width="100%" height="100%" fill="black" />
-              {randomBrushData.map(({ i, w, h, direction, delay }) => (
-                <motion.rect
-                  key={i}
-                  initial={
-                    direction === 1 ? { width: 0, x: 0 } : { width: 0, x: w }
-                  }
-                  animate={{ width: w, x: 0 }}
-                  transition={{ delay, duration: 0.5, ease: "easeOut" }}
-                  height={h}
-                  y={(size.height / strokes) * i}
-                  fill="white"
-                />
-              ))}
+              {isInView &&
+                randomBrushData.map(({ i, w, h, y, direction, delay }) => (
+                  <motion.rect
+                    key={i}
+                    initial={
+                      direction === 1 ? { width: 0, x: 0 } : { width: 0, x: w }
+                    }
+                    animate={{ width: w, x: 0 }}
+                    transition={{ delay, duration: 0.5, ease: "easeOut" }}
+                    height={h}
+                    y={y}
+                    fill="white"
+                  />
+                ))}
             </mask>
           </defs>
 
+          {/* Image with mask that reveals it via brush strokes */}
           <image
             href={image}
             width="100%"
             height="100%"
-            x={0}
-            y={0}
-            mask={`url(#stroke-mask-${instanceId}-final)`}
+            mask={`url(#stroke-mask-${instanceId})`}
             preserveAspectRatio="xMidYMid meet"
           />
 
-          {/* Individual animated brush strokes as masks */}
-          {brushElements}
-
-          {/* Final fade-in full image for clarity */}
+          {/* Final fade-in full image, if desired */}
           {showFull && (
             <motion.image
               href={image}
               width="100%"
               height="100%"
-              x={0}
-              y={0}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}

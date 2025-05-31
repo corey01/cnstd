@@ -36,10 +36,9 @@ const WeddingCountdown = () => {
 
   return (
     <div className={style.countdown}>
-      {/* <h4>Countdown to Our Wedding 💍</h4> */}
       <p>
         <strong>
-          <span>21st June 2026 – Falcon Manor, Settle</span>
+          <span>21st June 2026</span>
         </strong>
       </p>
       <div className={style.timeCards}>
