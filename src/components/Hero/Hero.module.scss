@@ -24,7 +24,7 @@
    background-repeat: no-repeat;
    background-position: center;
    background-size: contain; 
-   padding: 4.5rem;
+   padding: 5rem;
 
    @media screen and (min-width: 600px) {
       padding: 7em;
@@ -33,4 +33,10 @@
    @media screen and (min-width: 800px) {
       padding: 12em;
    }
+}
+
+.header {
+   font-weight: 400;
+   text-transform: uppercase;
+   line-height: 1.3;
 }

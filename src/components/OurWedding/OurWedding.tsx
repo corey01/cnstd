@@ -27,12 +27,13 @@ const OurWedding = () => {
               Falcon Manor, Settle, North Yorkshire, BD24 9BD
             </a>
           </p>
-          <BrushRevealImage image="venue.png" strokes={4} duration={4} />
+
           <p>
             A full schedule and RSVP details will be included with your formal
             invitation.
           </p>
         </div>
+        <BrushRevealImage image="venue.png" strokes={4} duration={4} />
       </div>
     </div>
   );

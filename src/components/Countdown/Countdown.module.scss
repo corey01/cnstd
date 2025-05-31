@@ -1,0 +1,22 @@
+.countdown {
+  .timeCards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    .timeCard {
+      display: flex;
+      flex-direction: column;
+
+      .timeDisplay {
+        font-size: 2rem;
+      }
+
+      span:not(.timeDisplay) {
+        font-size: 0.6em;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
