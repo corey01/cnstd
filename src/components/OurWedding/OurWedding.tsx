@@ -1,4 +1,4 @@
-import BrushRevealImage from "../ImageBrushStrokes/BrushRevealImage";
+import BrushRevealImage from '../ImageBrushStrokes/BrushRevealImage';
 
 const OurWedding = () => {
   return (
@@ -7,12 +7,12 @@ const OurWedding = () => {
       <div className="body">
         <div className="copy">
           <p>
-            We're planning a relaxed and joyful summer wedding, full of colour,
-            laughter, and beautiful Yorkshire scenery.
+            We're planning a relaxed and joyful summer wedding, full of colour, laughter, and
+            beautiful Yorkshire scenery.
           </p>
 
           <p>
-            The day will take place at the stunning{" "}
+            The day will take place at the stunning{' '}
             <strong>
               <span>Falcon Manor</span> in Settle
             </strong>
@@ -22,15 +22,15 @@ const OurWedding = () => {
           <p>
             <strong>Date:</strong> Sunday 21st June 2026
             <br />
-            <strong>Location:</strong>{" "}
+            <strong>Location:</strong>{' '}
             <a target="_blank" href="https://maps.app.goo.gl/ZgugnoPBNFYWKdg26">
               Falcon Manor, Settle, North Yorkshire, BD24 9BD
             </a>
           </p>
 
           <p>
-            A full schedule and RSVP details will be included with your formal
-            invitation (to follow).
+            A full schedule and RSVP details will be included with your formal invitation (to
+            follow).
           </p>
         </div>
         <BrushRevealImage image="venue.png" strokes={4} duration={4} />

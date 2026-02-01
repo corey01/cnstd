@@ -1,6 +1,6 @@
-import WeddingCountdown from "../Countdown/Countdown";
-import AuthLayout from "../Layout/AuthLayout";
-import style from "./Hero.module.scss";
+import WeddingCountdown from '../Countdown/Countdown';
+import AuthLayout from '../Layout/AuthLayout';
+import style from './Hero.module.scss';
 
 const Hero = () => (
   <>
@@ -14,8 +14,8 @@ const Hero = () => (
         <p>We’re getting married!</p>
         <br />
         <p>
-          Join us in the beautiful Yorkshire Dales for a summer celebration full
-          of colour, love, and laughter.
+          Join us in the beautiful Yorkshire Dales for a summer celebration full of colour, love,
+          and laughter.
         </p>
       </div>
     </AuthLayout>

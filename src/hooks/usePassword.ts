@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const PASSWORDS = {
-  PHYSICAL: "21June2026",
-  VIRTUAL: "Junio 21 2026"
+  PHYSICAL: '21June2026',
+  VIRTUAL: 'Junio 21 2026',
 } as const;
 
-type ValidPassword = typeof PASSWORDS[keyof typeof PASSWORDS];
+type ValidPassword = (typeof PASSWORDS)[keyof typeof PASSWORDS];
 
 const isValidPassword = (password: string | null): password is ValidPassword => {
-  return typeof password === 'string' && Object.values(PASSWORDS).includes(password as ValidPassword);
+  return (
+    typeof password === 'string' && Object.values(PASSWORDS).includes(password as ValidPassword)
+  );
 };
 
 export const usePassword = () => {
@@ -44,5 +46,5 @@ export const usePassword = () => {
     passwordEntered,
     handleSubmit,
     pageToShow: passwordEntered === PASSWORDS.PHYSICAL ? 'Physical' : 'Virtual',
-  }
-}
+  };
+};
