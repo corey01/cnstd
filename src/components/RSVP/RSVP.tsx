@@ -32,6 +32,8 @@ const RSVP = () => {
     guest1Name?: string;
     guest2Name?: string;
   }>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitDebug, setSubmitDebug] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const {
     register,
@@ -171,6 +173,8 @@ const RSVP = () => {
 
   const onSubmit = async (data: FormValues) => {
     setFormState('loading');
+    setSubmitError(null);
+    setSubmitDebug(null);
     setSubmittedValues({
       attendance: data.attendance,
       guest1Name: data.guest1Name,
@@ -179,13 +183,29 @@ const RSVP = () => {
     const formData = formRef.current ? new FormData(formRef.current) : new FormData();
     formData.append('access_key', key);
 
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formData,
-    });
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
 
-    const result = await response.json();
-    setFormState(result.success ? 'success' : 'error');
+      const result = await response.json().catch(() => null);
+      setSubmitDebug(result ? JSON.stringify(result, null, 2) : null);
+
+      if (!response.ok) {
+        throw new Error(result?.message || `Request failed (${response.status})`);
+      }
+
+      if (!result?.success) {
+        throw new Error(result?.message || 'Submission failed');
+      }
+
+      setFormState('success');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      setSubmitError(message);
+      setFormState('error');
+    }
   };
 
   const onInvalid = (errors: FieldErrors<FormValues>) => {
@@ -245,6 +265,9 @@ const RSVP = () => {
         ) : formState === 'error' ? (
           <div className={style.errorMessage}>
             <p>There was an error submitting your RSVP. Please try again later.</p>
+            {submitError && <p>{submitError}</p>}
+            {submitError && <p>{JSON.stringify(submitError, null, 2)}</p>}
+            {submitDebug && <pre>{submitDebug}</pre>}
           </div>
         ) : (
           <div className="body">
