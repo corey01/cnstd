@@ -386,12 +386,14 @@ const RSVP = () => {
 
                     <div className={style.djSectionFull}>
                       <div className={style.djSectionInner}>
-                        <label>
-                          Do you have any song requests for the evening?
+                        <label className={style.songRequest}>
+                          Do you have any song requests?
                           <textarea
                             {...register('songRequests')}
-                            placeholder="Let us know any songs you'd like to hear during the evening"
+                            placeholder={`Song #1 - Artist\nSong #2 - Artist\nSong #3 - Artist\nSong #4 - Artist`}
                             disabled={isLoading}
+                            className={style.underlineInput}
+                            rows={4}
                           />
                         </label>
                       </div>

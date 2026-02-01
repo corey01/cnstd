@@ -47,6 +47,46 @@
     resize: vertical;
   }
 
+  .songRequest {
+    margin-top: 1.5rem;
+  }
+
+  .songRequest .underlineInput {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0.4rem 0 1.4rem;
+    min-height: calc(2.6em * 4);
+    line-height: 2.6;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(2.6em - 1px),
+      rgba(46, 46, 46, 0.25) calc(2.6em - 1px),
+      rgba(46, 46, 46, 0.25) 2.6em
+    );
+    background-size: 100% 2.6em;
+    background-position: 0 2.6em;
+  }
+
+  .songRequest .underlineInput:focus {
+    outline: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(2.6em - 1px),
+      var(--gold) calc(2.6em - 1px),
+      var(--gold) 2.6em
+    );
+    background-position: 0 2.6em;
+  }
+
+  .songRequest .underlineInput::placeholder {
+    color: rgba(46, 46, 46, 0.5);
+  }
+
   button {
     margin-top: 1.2rem;
     background-color: var(--dusty-rose);
@@ -73,7 +113,6 @@
     padding-top: 0.6rem;
     border-top: 1px solid rgba(164, 194, 165, 0.4);
   }
-
 
   .inlineRadio {
     display: flex;
@@ -245,7 +284,7 @@
   .djSectionInner {
     max-width: 800px;
     margin: 0 auto;
-    padding: 1.5rem 2rem;
+    padding: 0rem 2rem 1.5rem;
 
     label {
       padding: 0.8rem;
