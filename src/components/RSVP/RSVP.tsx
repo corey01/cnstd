@@ -182,20 +182,11 @@ const RSVP = () => {
       guest1Name: data.guest1Name,
       guest2Name: data.guest2Name,
     });
-    let token = data['h-captcha-response'];
-    if (!token && hcaptchaRef.current?.executeAsync) {
-      token = await hcaptchaRef.current.executeAsync();
-      setValue('h-captcha-response', token, { shouldValidate: true });
-    }
-
-    if (!token) {
-      throw new Error('hCaptcha token is missing.');
-    }
-    const formData = formRef.current ? new FormData(formRef.current) : new FormData();
-    formData.append('access_key', web3formsAccessKey);
-    formData.set('h-captcha-response', token);
 
     try {
+      const formData = formRef.current ? new FormData(formRef.current) : new FormData();
+      formData.append('access_key', web3formsAccessKey);
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: formData,
@@ -324,8 +315,6 @@ const RSVP = () => {
                   show={shouldShowError('guest1Email')}
                   message="Guest 1 email is required."
                 />
-                <input type="hidden" {...register('h-captcha-response', { required: true })} />
-
                 <div className={style.section}>
                   <label>Will you be attending? *</label>
                   <label className={style.inlineRadio}>
