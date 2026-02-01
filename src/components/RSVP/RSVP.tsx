@@ -35,7 +35,6 @@ const RSVP = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitDebug, setSubmitDebug] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
-  const hcaptchaRef = useRef<any>(null);
   const {
     register,
     handleSubmit,
@@ -204,7 +203,6 @@ const RSVP = () => {
       }
 
       setFormState('success');
-      hcaptchaRef.current?.resetCaptcha?.();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       setSubmitError(message);
@@ -431,8 +429,7 @@ const RSVP = () => {
                     sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
                     reCaptchaCompat={false}
                     onVerify={onHCaptchaChange}
-                    size="invisible"
-                    ref={hcaptchaRef}
+                    size="compact"
                   />
                 </div>
                 <button type="submit" disabled={isLoading} className={style.submitButton}>
