@@ -58,7 +58,9 @@
     border: none;
     border-radius: 0;
     padding: 0.4rem 0 1.4rem;
-    min-height: calc(2.6em * 4);
+    height: calc((2.6em * 4) + 1.8rem);
+    min-height: calc((2.6em * 4) + 1.8rem);
+    max-height: calc((2.6em * 4) + 1.8rem);
     line-height: 2.6;
     background-image: repeating-linear-gradient(
       to bottom,
