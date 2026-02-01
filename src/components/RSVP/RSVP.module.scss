@@ -1,0 +1,172 @@
+.RSVP {
+  form {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    margin: 0.75rem 0 0.35rem;
+  }
+
+  input,
+  textarea,
+  button,
+  select {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background-color: var(--cream-white);
+    color: var(--charcoal);
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  button {
+    margin-top: 1.2rem;
+    background-color: var(--dusty-rose);
+    color: var(--cream-white);
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  button:hover,
+  button:focus-visible {
+    background-color: var(--soft-orange);
+    outline: none;
+  }
+
+  .submitButton:disabled {
+    background-color: var(--lavender);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .section {
+    margin-top: 1.2rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(164, 194, 165, 0.4);
+  }
+
+  .inlineRadio {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+  }
+
+  .inlineRadio input {
+    width: auto;
+  }
+
+  .mealSection {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    background-color: rgba(164, 194, 165, 0.12);
+  }
+
+  .mealSection p {
+    margin: 0 0 0.4rem;
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+
+  .mealGroup {
+    margin: 0.75rem 0 1rem;
+  }
+
+  .radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .radioOption {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(46, 46, 46, 0.15);
+    border-radius: 0.7rem;
+    background-color: var(--cream-white);
+    color: var(--charcoal);
+  }
+
+  .radioOption input {
+    margin-top: 0.2rem;
+    width: auto;
+  }
+
+  .fieldError {
+    display: block;
+    margin-top: 0.4rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.5rem;
+    background-color: rgba(246, 142, 95, 0.15);
+    border: 1px solid rgba(246, 142, 95, 0.45);
+    color: var(--marigold-orange);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(249, 248, 246, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  border-radius: 0.8rem;
+  pointer-events: all;
+}
+
+.loadingSpinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid rgba(46, 46, 46, 0.2);
+  border-top-color: var(--dusty-rose);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.captcha {
+  max-width: 100%;
+  margin: 1rem 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 0.5rem;
+  overflow: hidden;
+}
