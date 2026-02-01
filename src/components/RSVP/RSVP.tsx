@@ -35,6 +35,7 @@ const RSVP = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitDebug, setSubmitDebug] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const hcaptchaRef = useRef<any>(null);
   const {
     register,
     handleSubmit,
@@ -110,7 +111,7 @@ const RSVP = () => {
     },
   ];
 
-  const key = '8da3f5f0-a18d-4551-8219-6ab0900c60a4';
+  const web3formsAccessKey = '8da3f5f0-a18d-4551-8219-6ab0900c60a4';
 
   const renderRadioGroup = (
     name: MealFieldName,
@@ -181,8 +182,18 @@ const RSVP = () => {
       guest1Name: data.guest1Name,
       guest2Name: data.guest2Name,
     });
+    let token = data['h-captcha-response'];
+    if (!token && hcaptchaRef.current?.executeAsync) {
+      token = await hcaptchaRef.current.executeAsync();
+      setValue('h-captcha-response', token, { shouldValidate: true });
+    }
+
+    if (!token) {
+      throw new Error('hCaptcha token is missing.');
+    }
     const formData = formRef.current ? new FormData(formRef.current) : new FormData();
-    formData.append('access_key', key);
+    formData.append('access_key', web3formsAccessKey);
+    formData.set('h-captcha-response', token);
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -202,6 +213,7 @@ const RSVP = () => {
       }
 
       setFormState('success');
+      hcaptchaRef.current?.resetCaptcha?.();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       setSubmitError(message);
@@ -431,6 +443,7 @@ const RSVP = () => {
                     reCaptchaCompat={false}
                     onVerify={onHCaptchaChange}
                     size="invisible"
+                    ref={hcaptchaRef}
                   />
                 </div>
                 <button type="submit" disabled={isLoading} className={style.submitButton}>
