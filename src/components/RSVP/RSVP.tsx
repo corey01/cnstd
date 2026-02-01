@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { type FieldErrors, useForm } from 'react-hook-form';
 import style from './RSVP.module.scss';
-import { HCaptcha } from '@hcaptcha/react-hcaptcha';
 
 type GuestPrefix = 'guest1' | 'guest2';
 type Course = 'Starter' | 'Main' | 'Dessert';
@@ -22,7 +21,6 @@ type FormValues = {
   guest2Dessert?: string;
   guest2DietaryNotes?: string;
   songRequests?: string;
-  'h-captcha-response': string;
 };
 
 const RSVP = () => {
@@ -39,14 +37,12 @@ const RSVP = () => {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: rhfState,
     setFocus,
   } = useForm<FormValues>({
     defaultValues: {
       attendance: '',
       partySize: '1',
-      ['h-captcha-response']: '',
     },
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -224,7 +220,6 @@ const RSVP = () => {
       'guest2Starter',
       'guest2Main',
       'guest2Dessert',
-      'h-captcha-response',
     ];
 
     const firstInvalid = fieldOrder.find((field) => errors[field]);
@@ -238,10 +233,6 @@ const RSVP = () => {
     }
 
     setFocus(firstInvalid);
-  };
-
-  const onHCaptchaChange = (token: string): void => {
-    setValue('h-captcha-response', token);
   };
 
   return (
@@ -295,6 +286,12 @@ const RSVP = () => {
                     aria-invalid={Boolean(errors.guest1Name)}
                   />
                 </label>
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  className="hidden"
+                  style={{ display: 'none' }}
+                />
                 <FieldError
                   show={shouldShowError('guest1Name')}
                   message="Guest 1 name is required."
@@ -424,14 +421,6 @@ const RSVP = () => {
                   </>
                 )}
 
-                <div className={style.captcha}>
-                  <HCaptcha
-                    sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
-                    reCaptchaCompat={false}
-                    onVerify={onHCaptchaChange}
-                    size="compact"
-                  />
-                </div>
                 <button type="submit" disabled={isLoading} className={style.submitButton}>
                   Submit
                 </button>
