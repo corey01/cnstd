@@ -17,6 +17,7 @@ const PhysicalPage = () => {
       <Accommodation />
       <Divider />
       <Notes />
+      <Divider />
       <RSVP />
     </>
   );

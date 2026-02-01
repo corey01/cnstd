@@ -25,6 +25,11 @@ type FormValues = {
 
 const RSVP = () => {
   const [formState, setFormState] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [submittedValues, setSubmittedValues] = useState<{
+    attendance?: FormValues['attendance'];
+    guest1Name?: string;
+    guest2Name?: string;
+  }>({});
   const formRef = useRef<HTMLFormElement | null>(null);
   const { register, handleSubmit, watch, setValue, formState: rhfState, setFocus } = useForm<FormValues>({
     defaultValues: {
@@ -53,20 +58,20 @@ const RSVP = () => {
     show ? <span className={style.fieldError} role="alert">{message}</span> : null;
 
   const starterOptions = [
-    { label: "Homemade soup", value: "starter_soup" },
-    { label: "Melon, Parma ham and mozzarella", value: "starter_melon_parma_mozzarella" },
-    { label: "Oak smoked salmon, potato, caper, lemon & parsley salad, citrus dressing, granary bread roll", value: "starter_salmon_salad" },
+    { label: "Homemade soup", value: "Starter Soup" },
+    { label: "Melon, Parma ham and mozzarella", value: "Starter Melon Ham Mozzarella" },
+    { label: "Oak smoked salmon, potato, caper, lemon & parsley salad, citrus dressing, granary bread roll", value: "Starter Salmon Salad" },
   ];
 
   const mainCourseOptions = [
-    { label: "Roast sirloin of Yorkshire beef, Yorkshire pudding, duck fat roasted potatoes, carrot purée and red wine sauce", value: "main_yorkshire_beef" },
-    { label: "Roast chicken breast, saffron cous cous, chargrilled vegetables, pomegranate and local honey jus", value: "main_roast_chicken" },
-    { label: "Bowland ale sausages, champ mash, crispy shallot onion rings and rich ale gravy", value: "main_bowland_sausages" },
+    { label: "Roast sirloin of Yorkshire beef, Yorkshire pudding, duck fat roasted potatoes, carrot purée and red wine sauce", value: "Main Yorkshire Beef" },
+    { label: "Roast chicken breast, saffron cous cous, chargrilled vegetables, pomegranate and local honey jus", value: "Main Roast Chicken" },
+    { label: "Bowland ale sausages, champ mash, crispy shallot onion rings and rich ale gravy", value: "Main Bowland Sausages" },
   ];
 
   const dessertOptions = [
-    { label: "Salted caramel chocolate brownie with clotted cream ice cream", value: "dessert_chocolate_brownie" },
-    { label: "Raspberry and white chocolate cheesecake, summer berry compote", value: "dessert_raspberry_cheesecake" },
+    { label: "Salted caramel chocolate brownie with clotted cream ice cream", value: "Dessert Chocolate Brownie" },
+    { label: "Raspberry and white chocolate cheesecake, summer berry compote", value: "Dessert Raspberry Cheesecake" },
   ];
 
   const key = "8da3f5f0-a18d-4551-8219-6ab0900c60a4";
@@ -126,8 +131,13 @@ const RSVP = () => {
     </div>
   );
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: FormValues) => {
     setFormState('loading');
+    setSubmittedValues({
+      attendance: data.attendance,
+      guest1Name: data.guest1Name,
+      guest2Name: data.guest2Name,
+    });
     const formData = formRef.current ? new FormData(formRef.current) : new FormData();
     formData.append("access_key", key);
 
@@ -136,8 +146,8 @@ const RSVP = () => {
       body: formData
     });
 
-    const data = await response.json();
-    setFormState(data.success ? 'success' : 'error');
+    const result = await response.json();
+    setFormState(result.success ? 'success' : 'error');
   };
 
   const onInvalid = (errors: FieldErrors<FormValues>) => {
@@ -190,13 +200,11 @@ const RSVP = () => {
         formState === 'success' ? (
           <div className={style.successMessage}>
             <p>Thank you for sending your RSVP!</p>
-            {
-              attendance === 'yes' ? (
-                <p>We look forward to celebrating with you, {guest1Name}{guest2Name ? ` and ${guest2Name}` : ''}!</p>
-              ) : (
-                <p>We're sorry you can't make it, but we appreciate you letting us know.</p>
-              )
-            }
+            {submittedValues.attendance === 'yes' ? (
+              <p>We look forward to celebrating with you, {submittedValues.guest1Name}{submittedValues.guest2Name ? ` and ${submittedValues.guest2Name}` : ''}!</p>
+            ) : (
+              <p>We're sorry you can't make it, but we appreciate you letting us know.</p>
+            )}
           </div>
         ) : formState === 'error' ? (
           <div className={style.errorMessage}>
@@ -292,7 +300,7 @@ const RSVP = () => {
 
                 <div className={style.section}>
                   <p>Meal selections (one starter, main and dessert per guest)</p>
-                  {renderMealSection(guest1Name || "Guest 1", "guest1", true)}
+                  {renderMealSection(guest1Name ? guest1Name + "'s" : "Guest 1", "guest1", true)}
                   {partySize === '2' && (
                     <>
                       <label>
@@ -306,7 +314,7 @@ const RSVP = () => {
                         />
                       </label>
                       <FieldError show={shouldShowError('guest2Name')} message="Guest 2 name is required." />
-                      {renderMealSection(guest2Name! || "Guest 2", "guest2", partySize === '2')}
+                      {renderMealSection(guest2Name ? guest2Name + "'s" : "Guest 2", "guest2", partySize === '2')}
                     </>
                   )}
                 </div>
