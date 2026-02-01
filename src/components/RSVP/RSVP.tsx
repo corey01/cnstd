@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 import style from './RSVP.module.scss'
 import { HCaptcha } from '@hcaptcha/react-hcaptcha';
 
