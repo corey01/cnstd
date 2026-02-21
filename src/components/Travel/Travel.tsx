@@ -1,9 +1,9 @@
 const Travel = () => {
   return (
     <div className="content">
-      <h2>Travel</h2>
       <div className="body">
         <div className="copy">
+          <h2>Travel</h2>
           <p>
             <strong>By car:</strong> Falcon Manor can be accessed via the A65, which runs past
             Settle. From the A65, it is only a short drive to the venue, where there is on-site

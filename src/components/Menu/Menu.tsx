@@ -1,9 +1,9 @@
 const Menu = () => {
   return (
     <div className="content">
-      <h2>Wedding Menu</h2>
       <div className="body">
         <div className="copy">
+          <h2>Wedding Menu</h2>
           <h3>Starter</h3>
           <p>Homemade tomato &amp; basil soup</p>
           <p>Melon, Parma ham and mozzarella</p>

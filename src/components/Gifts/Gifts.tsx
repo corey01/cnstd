@@ -1,9 +1,9 @@
 const Gifts = () => {
   return (
     <div className="content">
-      <h2>Gifts</h2>
       <div className="body">
         <div className="copy">
+          <h2>Gifts</h2>
           <p>
             Your presence on our special day is our real present.
           </p>

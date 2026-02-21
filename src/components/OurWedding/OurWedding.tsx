@@ -4,7 +4,7 @@ const OurWedding = () => {
   return (
     <div className="content">
       <h2>Our Wedding</h2>
-      <div className="body">
+      <div className="body bodySplit">
         <div className="copy">
           <p>
             We're planning a relaxed and joyful summer wedding, full of colour, laughter, and

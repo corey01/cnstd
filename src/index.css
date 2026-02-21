@@ -100,10 +100,7 @@ button:focus-visible {
 
 .body .copy {
   padding: 0 1.5em;
-
-  @media screen and (min-width: 600px) {
-    width: 48%;
-  }
+  width: 100%;
 }
 
 .body .copy span {
@@ -114,16 +111,21 @@ button:focus-visible {
 .body img {
   width: 100%;
   border-radius: 0.3rem;
-
-  @media screen and (min-width: 600px) {
-    width: 52%;
-  }
 }
 
 @media screen and (min-width: 600px) {
-  .body {
+  .bodySplit {
     flex-direction: row;
     align-items: center;
+    gap: 1.25rem;
+  }
+
+  .bodySplit .copy {
+    width: 48%;
+  }
+
+  .bodySplit img {
+    width: 52%;
   }
 }
 

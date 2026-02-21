@@ -29,6 +29,14 @@ h2 {
   letter-spacing: 0.06em;
 }
 
+.content > h2 {
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
 h3 {
   font-family: var(--font-script);
   font-weight: 400;
@@ -52,4 +60,10 @@ h6 {
   margin-left: auto;
   margin-right: auto;
   overflow-wrap: break-word;
+}
+
+@media (min-width: 900px) {
+  .content p {
+    max-width: 46ch;
+  }
 }

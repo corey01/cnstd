@@ -1,9 +1,9 @@
 const Notes = () => {
   return (
     <div className="content">
-      <h2>FAQ & Notes</h2>
       <div className="body">
         <div className="copy">
+          <h2>FAQ & Notes</h2>
           <h3>Children</h3>
           <p>
             While we absolutely love children, we’ve decided to keep our wedding a largely

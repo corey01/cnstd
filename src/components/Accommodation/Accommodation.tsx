@@ -76,7 +76,7 @@ const Accommodation = () => {
   return (
     <div className="content">
       <h2>Accommodation</h2>
-      <div className="body">
+      <div className="body bodySplit">
         <div className="copy">
           <p>
             Some guests are staying at Falcon Manor on the night of the wedding and have already
