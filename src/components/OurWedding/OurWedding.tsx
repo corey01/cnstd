@@ -5,7 +5,8 @@ const OurWedding = () => {
     'https://calendar.google.com/calendar/render?action=TEMPLATE' +
     '&text=' +
     encodeURIComponent("Norma & Corey's Wedding") +
-    '&dates=20260621T110000Z/20260622T010000Z' +
+    // Use local times with ctz so DST is handled correctly
+    '&dates=20260621T120000/20260622T010000' +
     '&details=' +
     encodeURIComponent(
       'Ceremony at 12:00pm. Please arrive between 11:00am and 11:30am. Ceremony, food, and evening celebration all take place at Falcon Manor.',
