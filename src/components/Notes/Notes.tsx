@@ -12,11 +12,6 @@ const Notes = () => {
           <p>
             The only children attending will be those who are part of the immediate wedding party.
           </p>
-          <h3>Plus Ones</h3>
-          <p>
-            If your invitation includes a plus one, your RSVP form lets you submit details for both
-            guests.
-          </p>
           <h3>Dietary Requirements</h3>
           <p>
             If you are attending, you can include any allergies or dietary requirements in the RSVP
