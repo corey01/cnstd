@@ -236,7 +236,7 @@ const RSVP = () => {
   };
 
   return (
-    <div className={style.RSVP}>
+    <div id="rsvp" className={style.RSVP}>
       <div className="content">
         <h2>RSVP</h2>
         {formState === 'success' ? (

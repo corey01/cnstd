@@ -1,7 +1,7 @@
-const DressCode = () => {
+const Notes = () => {
   return (
     <div className="content">
-      <h2>A Few Notes</h2>
+      <h2>FAQ & Notes</h2>
       <div className="body">
         <div className="copy">
           <h3>Children</h3>
@@ -11,6 +11,16 @@ const DressCode = () => {
           </p>
           <p>
             The only children attending will be those who are part of the immediate wedding party.
+          </p>
+          <h3>Plus Ones</h3>
+          <p>
+            If your invitation includes a plus one, your RSVP form lets you submit details for both
+            guests.
+          </p>
+          <h3>Dietary Requirements</h3>
+          <p>
+            If you are attending, you can include any allergies or dietary requirements in the RSVP
+            form and we will pass everything to the venue team.
           </p>
           <p>
             We hope this gives everyone plenty of time to make arrangements, and we’re grateful for
@@ -22,4 +32,4 @@ const DressCode = () => {
   );
 };
 
-export default DressCode;
+export default Notes;

@@ -1,43 +1,125 @@
-import BrushRevealImage from "../ImageBrushStrokes/BrushRevealImage";
+import BrushRevealImage from '../ImageBrushStrokes/BrushRevealImage';
 
-const DressCode = () => {
+type StayOption = {
+  name: string;
+  website?: string;
+  location?: string;
+  phone?: string;
+  notes?: string;
+  email?: string;
+};
+
+const stayOptions: StayOption[] = [
+  {
+    name: 'The Golden Lion',
+    website: 'https://www.goldenlionsettle.co.uk',
+    location: 'Duke Street, Settle',
+    phone: '01729 822203',
+  },
+  {
+    name: 'The Royal Oak',
+    website: 'https://www.royaloak-settle.co.uk',
+    location: 'Kirkgate, Settle',
+    phone: '01729 822561',
+  },
+  {
+    name: 'No 3 at Settle (Self Catering)',
+    website: 'https://www.no3atsettle.co.uk',
+    phone: '01729 825673',
+    notes: 'Minimum 3-night stay.',
+  },
+  {
+    name: 'Settle Lodge',
+    website: 'https://www.settlelodge.co.uk',
+    location: 'Duke St, Settle, North Yorkshire, BD24 9AS',
+    phone: '01729 823258',
+  },
+  {
+    name: 'Craven Arms',
+    website: 'https://www.craven-arms.co.uk',
+    location: 'Brackenber Lane, Giggleswick, Settle, Yorkshire, BD24 0EA',
+    phone: '01729 825627',
+  },
+  {
+    name: 'Harts Head',
+    website: 'https://www.hartsheadhotel.co.uk',
+    location: 'Belle Hill, Giggleswick, North Yorkshire, BD24 0BA',
+    phone: '01729 822086',
+  },
+  {
+    name: 'The Royal Hotel',
+    website: 'https://www.royalhotelkirkbylonsdale.co.uk',
+    location: 'Kirkby Lonsdale, Cumbria',
+    phone: '01524 271966',
+  },
+  {
+    name: 'Carols Places Holiday Cottages',
+    website: 'https://www.carolsplaces.com/our-places',
+    location: 'Giggleswick, Settle, Wigglesworth, Stainforth, Kirkby Lonsdale and Gisburn',
+    email: 'info@carolsplaces.com',
+    phone: '07729 827961',
+  },
+  {
+    name: 'Premier Inn',
+    location: 'Hellifield Rd, Gargrave, Skipton, BD23 4AJ',
+    phone: '08715 278980',
+  },
+  {
+    name: 'King William the Fourth',
+    website: 'https://www.kingwilliamthefourthguesthouse.co.uk',
+    location: 'High St, Settle, North Yorkshire, BD24 9EX',
+    phone: '01729 268152',
+  },
+];
+
+const Accommodation = () => {
   return (
     <div className="content">
-      <h2>
-        Accommodation <br />
-        &amp; Travel
-      </h2>
+      <h2>Accommodation</h2>
       <div className="body">
         <div className="copy">
           <p>
-            <strong>Settle</strong> is a charming market town with plenty of
-            lovely places to stay nearby – from local B&amp;Bs and guesthouses
-            to country pubs and inns.
+            Some guests are staying at Falcon Manor on the night of the wedding and have already
+            been contacted directly with room details.
           </p>
 
-          <p>We recommend booking early, as it’s a popular spot in summer.</p>
+          <p>For everyone else, the venue has provided the nearby options below.</p>
 
-          <p>
-            <strong>Travel:</strong>
-          </p>
-          <p>
-            <strong>By car:</strong> There’s on-site parking available at the
-            venue.
-          </p>
-          <p>
-            <strong>By train:</strong> Settle station is on the Leeds–Carlisle
-            line and just a 10-minute walk to Falcon Manor.
-          </p>
-          <p>
-            <strong>By air:</strong> The nearest airport is{" "}
-            <span>Leeds Bradford (LBA)</span>, around 1 hour by car. <br />
-            <span>Manchester (MAN)</span> and <span>Liverpool (LPL)</span>{" "}
-            airports are also within 1.5–2 hours' drive.
-          </p>
-          <p>
-            <strong>Taxis:</strong> We’ll list some local numbers closer to the
-            time.
-          </p>
+          <details className="accommodationAccordion">
+            <summary>View Local Accommodation</summary>
+            <ul className="accommodationList">
+              {stayOptions.map((stay) => (
+                <li key={stay.name} className="accommodationItem">
+                  <p>
+                    <strong>{stay.name}</strong>
+                  </p>
+                  {stay.website && (
+                    <p>
+                      <a href={stay.website} target="_blank" rel="noreferrer">
+                        {stay.website.replace('https://', '')}
+                      </a>
+                    </p>
+                  )}
+                  {stay.location && <p>{stay.location}</p>}
+                  {stay.email && (
+                    <p>
+                      <a href={`mailto:${stay.email}`}>{stay.email}</a>
+                    </p>
+                  )}
+                  {stay.phone && (
+                    <p>
+                      <a href={`tel:${stay.phone.replace(/\s+/g, '')}`}>{stay.phone}</a>
+                    </p>
+                  )}
+                  {stay.notes && <p>{stay.notes}</p>}
+                </li>
+              ))}
+            </ul>
+          </details>
+
+          <p>Settle town centre is usually easiest for walking access to Falcon Manor.</p>
+
+          <p>We recommend booking early, as this area is popular in summer.</p>
         </div>
         <BrushRevealImage image="/settle.png" />
       </div>
@@ -45,4 +127,4 @@ const DressCode = () => {
   );
 };
 
-export default DressCode;
+export default Accommodation;

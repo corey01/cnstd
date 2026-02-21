@@ -22,6 +22,8 @@ const OurWedding = () => {
           <p>
             <strong>Date:</strong> Sunday 21st June 2026
             <br />
+            <strong>Guest arrival:</strong> between 11:00am and 11:30am
+            <br />
             <strong>Location:</strong>{' '}
             <a target="_blank" href="https://maps.app.goo.gl/ZgugnoPBNFYWKdg26">
               Falcon Manor, Settle, North Yorkshire, BD24 9BD
@@ -29,8 +31,7 @@ const OurWedding = () => {
           </p>
 
           <p>
-            A full schedule and RSVP details will be included with your formal invitation (to
-            follow).
+            Ceremony, food, and evening celebration all take place at Falcon Manor.
           </p>
         </div>
         <BrushRevealImage image="venue.png" strokes={4} duration={4} />
