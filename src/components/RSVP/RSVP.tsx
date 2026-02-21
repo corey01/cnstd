@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { type FieldErrors, useForm } from 'react-hook-form';
 import style from './RSVP.module.scss';
 
@@ -23,6 +23,11 @@ type FormValues = {
   songRequests?: string;
 };
 
+type StoredRSVP = {
+  timestamp: string;
+  data: FormValues;
+};
+
 const RSVP = () => {
   const [formState, setFormState] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
   const [submittedValues, setSubmittedValues] = useState<{
@@ -30,6 +35,7 @@ const RSVP = () => {
     guest1Name?: string;
     guest2Name?: string;
   }>({});
+  const [storedSubmission, setStoredSubmission] = useState<StoredRSVP | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitDebug, setSubmitDebug] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -168,6 +174,26 @@ const RSVP = () => {
     </div>
   );
 
+  // Load any saved RSVP from localStorage on first mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('rsvpSubmission');
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoredRSVP;
+      if (parsed?.data?.guest1Name) setStoredSubmission(parsed);
+    } catch (_) {
+      // noop
+    }
+  }, []);
+
+  const optionLabelMap = new Map<string, string>([
+    ...starterOptions.map((o) => [o.value, o.label] as const),
+    ...mainCourseOptions.map((o) => [o.value, o.label] as const),
+    ...dessertOptions.map((o) => [o.value, o.label] as const),
+  ]);
+
+  const labelFor = (value?: string) => (value ? optionLabelMap.get(value) || value : undefined);
+
   const onSubmit = async (data: FormValues) => {
     setFormState('loading');
     setSubmitError(null);
@@ -197,7 +223,14 @@ const RSVP = () => {
       if (!result?.success) {
         throw new Error(result?.message || 'Submission failed');
       }
-
+      // Persist a local copy for future visits
+      try {
+        const payload: StoredRSVP = { timestamp: new Date().toISOString(), data };
+        localStorage.setItem('rsvpSubmission', JSON.stringify(payload));
+        setStoredSubmission(payload);
+      } catch (_) {
+        // ignore storage errors
+      }
       setFormState('success');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
@@ -239,7 +272,66 @@ const RSVP = () => {
     <div id="rsvp" className={style.RSVP}>
       <div className="content">
         <h2>RSVP</h2>
-        {formState === 'success' ? (
+        {storedSubmission ? (
+          <div className={style.successMessage}>
+            <p>
+              You have already RSVP&apos;d, thank you{' '}
+              <strong>
+                {storedSubmission.data.guest1Name}
+                {storedSubmission.data.guest2Name ? ` and ${storedSubmission.data.guest2Name}` : ''}
+              </strong>
+              .
+            </p>
+            {storedSubmission.data.attendance === 'yes' ? (
+              <div className={style.summaryBox}>
+                <p className={style.summaryHeading}>Summary of your selections</p>
+                <ul className={style.summaryList}>
+                  <li>
+                    Attendance: attending{' '}
+                    {storedSubmission.data.partySize === '2'
+                      ? `with ${storedSubmission.data.guest2Name}`
+                      : 'alone.'}
+                  </li>
+                </ul>
+                <div className={style.guestBlock}>
+                  <p className={style.guestName}>{storedSubmission.data.guest1Name}&apos;s meal</p>
+                  <ul className={style.mealList}>
+                    <li>{labelFor(storedSubmission.data.guest1Starter)}</li>
+                    <li>{labelFor(storedSubmission.data.guest1Main)}</li>
+                    <li>{labelFor(storedSubmission.data.guest1Dessert)}</li>
+                  </ul>
+                </div>
+                {storedSubmission.data.partySize === '2' && storedSubmission.data.guest2Name ? (
+                  <div className={style.guestBlock}>
+                    <p className={style.guestName}>
+                      {storedSubmission.data.guest2Name}&apos;s meal
+                    </p>
+                    <ul className={style.mealList}>
+                      <li>{labelFor(storedSubmission.data.guest2Starter)}</li>
+                      <li>{labelFor(storedSubmission.data.guest2Main)}</li>
+                      <li>{labelFor(storedSubmission.data.guest2Dessert)}</li>
+                    </ul>
+                  </div>
+                ) : null}
+                {storedSubmission.data.guest1DietaryNotes ? (
+                  <p>Dietary notes (guest 1): {storedSubmission.data.guest1DietaryNotes}</p>
+                ) : null}
+                {storedSubmission.data.guest2DietaryNotes ? (
+                  <p>Dietary notes (guest 2): {storedSubmission.data.guest2DietaryNotes}</p>
+                ) : null}
+                {storedSubmission.data.songRequests ? (
+                  <p>Song requests: {storedSubmission.data.songRequests}</p>
+                ) : null}
+              </div>
+            ) : (
+              <p>Attendance: not attending.</p>
+            )}
+            <p>
+              If anything needs to change, or if there are any problems, please contact Norma or
+              Corey directly.
+            </p>
+          </div>
+        ) : formState === 'success' ? (
           <div className={style.successMessage}>
             <p>Thank you for sending your RSVP!</p>
             {submittedValues.attendance === 'yes' ? (
@@ -277,7 +369,7 @@ const RSVP = () => {
                 )}
 
                 <label>
-                  Guest 1 name *
+                  Your name *
                   <input
                     type="text"
                     {...register('guest1Name', { required: true })}
@@ -292,12 +384,9 @@ const RSVP = () => {
                   className="hidden"
                   style={{ display: 'none' }}
                 />
-                <FieldError
-                  show={shouldShowError('guest1Name')}
-                  message="Guest 1 name is required."
-                />
+                <FieldError show={shouldShowError('guest1Name')} message="Your name is required." />
                 <label>
-                  Guest 1 email *
+                  Your email *
                   <input
                     type="email"
                     {...register('guest1Email', { required: true })}
@@ -306,32 +395,31 @@ const RSVP = () => {
                     aria-invalid={Boolean(errors.guest1Email)}
                   />
                 </label>
-                <FieldError
-                  show={shouldShowError('guest1Email')}
-                  message="Guest 1 email is required."
-                />
+                <FieldError show={shouldShowError('guest1Email')} message="Your email is required." />
                 <div className={style.section}>
-                  <label>Will you be attending? *</label>
-                  <label className={style.inlineRadio}>
-                    <input
-                      type="radio"
-                      value="yes"
-                      {...register('attendance', { required: true })}
-                      required
-                      disabled={isLoading}
-                    />
-                    Yes
-                  </label>
-                  <label className={style.inlineRadio}>
-                    <input
-                      type="radio"
-                      value="no"
-                      {...register('attendance', { required: true })}
-                      required
-                      disabled={isLoading}
-                    />
-                    No
-                  </label>
+                  <fieldset className={style.choiceGroup}>
+                    <legend>Will you be attending? *</legend>
+                    <label className={style.inlineRadio}>
+                      <input
+                        type="radio"
+                        value="yes"
+                        {...register('attendance', { required: true })}
+                        required
+                        disabled={isLoading}
+                      />
+                      Yes
+                    </label>
+                    <label className={style.inlineRadio}>
+                      <input
+                        type="radio"
+                        value="no"
+                        {...register('attendance', { required: true })}
+                        required
+                        disabled={isLoading}
+                      />
+                      No
+                    </label>
+                  </fieldset>
                   <FieldError
                     show={shouldShowError('attendance')}
                     message="Please choose yes or no."
@@ -341,67 +429,67 @@ const RSVP = () => {
                 {attendance === 'yes' && (
                   <>
                     <div className={style.section}>
-                      <label>How many people are attending? *</label>
-                      <label className={style.inlineRadio}>
-                        <input
-                          type="radio"
-                          value="1"
-                          {...register('partySize', { required: true })}
-                          required
-                          disabled={isLoading}
-                        />
-                        Just me
-                      </label>
-                      <label className={style.inlineRadio}>
-                        <input
-                          type="radio"
-                          value="2"
-                          {...register('partySize', { required: true })}
-                          required
-                          disabled={isLoading}
-                        />
-                        I&apos;m attending with my partner/spouse/guest
-                      </label>
+                      <fieldset className={style.choiceGroup}>
+                        <legend>How many people are attending? *</legend>
+                        <label className={style.inlineRadio}>
+                          <input
+                            type="radio"
+                            value="1"
+                            {...register('partySize', { required: true })}
+                            required
+                            disabled={isLoading}
+                          />
+                          Just me
+                        </label>
+                        <label className={style.inlineRadio}>
+                          <input
+                            type="radio"
+                            value="2"
+                            {...register('partySize', { required: true })}
+                            required
+                            disabled={isLoading}
+                          />
+                          I&apos;m attending with my partner/spouse/guest
+                        </label>
+                      </fieldset>
                       <FieldError
                         show={shouldShowError('partySize')}
                         message="Please choose party size."
                       />
+                      {partySize === '2' && (
+                        <>
+                          <label>
+                            What is your partner/spouse/guest&apos;s name? *
+                            <input
+                              type="text"
+                              {...register('guest2Name', { required: partySize === '2' })}
+                              required={partySize === '2'}
+                              disabled={isLoading}
+                              aria-invalid={Boolean(errors.guest2Name)}
+                            />
+                          </label>
+                          <FieldError
+                            show={shouldShowError('guest2Name')}
+                            message="Guest name is required."
+                          />
+                        </>
+                      )}
                     </div>
 
-                    <div className={style.mealSelectionsFull}>
-                      <div className={style.mealSelectionsInner}>
-                        <div className={style.section}>
-                          <p>Meal selections (one starter, main and dessert per guest)</p>
+                    <div className={`${style.section} ${style.mealSelections}`}>
+                      <p className={style.mealSelectionsIntro}>
+                        Meal selections (one starter, main and dessert per guest)
+                      </p>
+                      {renderMealSection(guest1Name ? guest1Name + "'s" : 'Guest 1', 'guest1', true)}
+                      {partySize === '2' && (
+                        <>
                           {renderMealSection(
-                            guest1Name ? guest1Name + "'s" : 'Guest 1',
-                            'guest1',
-                            true,
+                            guest2Name ? guest2Name + "'s" : 'Guest 2',
+                            'guest2',
+                            partySize === '2',
                           )}
-                          {partySize === '2' && (
-                            <>
-                              <label>
-                                Guest 2 name *
-                                <input
-                                  type="text"
-                                  {...register('guest2Name', { required: partySize === '2' })}
-                                  required={partySize === '2'}
-                                  disabled={isLoading}
-                                  aria-invalid={Boolean(errors.guest2Name)}
-                                />
-                              </label>
-                              <FieldError
-                                show={shouldShowError('guest2Name')}
-                                message="Guest 2 name is required."
-                              />
-                              {renderMealSection(
-                                guest2Name ? guest2Name + "'s" : 'Guest 2',
-                                'guest2',
-                                partySize === '2',
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
+                        </>
+                      )}
                     </div>
 
                     <div className={style.djSectionFull}>
