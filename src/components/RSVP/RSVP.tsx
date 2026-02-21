@@ -112,7 +112,7 @@ const RSVP = () => {
     },
   ];
 
-  const web3formsAccessKey = '8da3f5f0-a18d-4551-8219-6ab0900c60a4';
+  const web3formsAccessKey = '155d7b80-59d8-4cc3-9768-1d872cd8ffe4';
 
   const renderRadioGroup = (
     name: MealFieldName,
@@ -395,7 +395,10 @@ const RSVP = () => {
                     aria-invalid={Boolean(errors.guest1Email)}
                   />
                 </label>
-                <FieldError show={shouldShowError('guest1Email')} message="Your email is required." />
+                <FieldError
+                  show={shouldShowError('guest1Email')}
+                  message="Your email is required."
+                />
                 <div className={style.section}>
                   <fieldset className={style.choiceGroup}>
                     <legend>Will you be attending? *</legend>
@@ -480,7 +483,11 @@ const RSVP = () => {
                       <p className={style.mealSelectionsIntro}>
                         Meal selections (one starter, main and dessert per guest)
                       </p>
-                      {renderMealSection(guest1Name ? guest1Name + "'s" : 'Guest 1', 'guest1', true)}
+                      {renderMealSection(
+                        guest1Name ? guest1Name + "'s" : 'Guest 1',
+                        'guest1',
+                        true,
+                      )}
                       {partySize === '2' && (
                         <>
                           {renderMealSection(
