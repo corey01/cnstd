@@ -1,6 +1,19 @@
 import BrushRevealImage from '../ImageBrushStrokes/BrushRevealImage';
 
 const OurWedding = () => {
+  const googleCalendarUrl =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' +
+    encodeURIComponent("Norma & Corey's Wedding") +
+    '&dates=20260621T110000Z/20260622T010000Z' +
+    '&details=' +
+    encodeURIComponent(
+      'Ceremony at 12:00pm. Please arrive between 11:00am and 11:30am. Ceremony, food, and evening celebration all take place at Falcon Manor.',
+    ) +
+    '&location=' +
+    encodeURIComponent('Falcon Manor, Settle, North Yorkshire, BD24 9BD') +
+    '&ctz=Europe/London';
+
   return (
     <div className="content">
       <h2>Our Wedding</h2>
@@ -30,8 +43,16 @@ const OurWedding = () => {
             </a>
           </p>
 
-          <p>
-            Ceremony, food, and evening celebration all take place at Falcon Manor.
+          <p>Ceremony, food, and evening celebration all take place at Falcon Manor.</p>
+
+          <p className="calendarLinks">
+            <a href={googleCalendarUrl} target="_blank" rel="noreferrer">
+              Add to Google Calendar
+            </a>
+            {' · '}
+            <a href="/norma-corey-wedding.ics" download>
+              Download iCal (.ics)
+            </a>
           </p>
         </div>
         <BrushRevealImage image="venue.png" strokes={4} duration={4} />

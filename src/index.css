@@ -197,6 +197,14 @@ ul {
   line-height: 1.15;
 }
 
+.calendarLinks {
+  margin-top: 0.4rem;
+}
+
+.calendarLinks a {
+  font-size: 0.95em;
+}
+
 .mapBreakout {
   width: 100vw;
   margin-left: calc(50% - 50vw);
