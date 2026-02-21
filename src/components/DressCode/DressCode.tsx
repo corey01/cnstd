@@ -4,7 +4,7 @@ const DressCode = () => {
   return (
     <div className="content">
       <h2>Dress Code</h2>
-      <div className="body bodySplit">
+      <div className="body bodySplit bodySplitReverse">
         <div className="copy">
           <p>
             Our theme is summer celebration – so we’re encouraging{" "}

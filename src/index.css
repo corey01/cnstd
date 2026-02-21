@@ -129,6 +129,10 @@ button:focus-visible {
   .bodySplit img {
     width: 52%;
   }
+
+  .bodySplit.bodySplitReverse {
+    flex-direction: row-reverse;
+  }
 }
 
 .divider {

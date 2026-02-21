@@ -360,7 +360,7 @@ const RSVP = () => {
                           required
                           disabled={isLoading}
                         />
-                        I'm bringing a plus one
+                        I&apos;m attending with my partner/spouse/guest
                       </label>
                       <FieldError
                         show={shouldShowError('partySize')}
