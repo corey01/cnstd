@@ -5,7 +5,6 @@
   padding: clamp(0.6rem, 2.4vw, 1rem);
   text-align: center;
   background: var(--paper);
-  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.32);
   box-sizing: border-box;
   overflow-x: clip;
 }
