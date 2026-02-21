@@ -30,7 +30,7 @@ const OurWedding = () => {
             <strong>
               <span>Falcon Manor</span> in Settle
             </strong>
-            , nestled in the heart of the Dales.
+            , nestled in the heart of the Yorkshire Dales.
           </p>
 
           <p>
