@@ -101,6 +101,8 @@ button:focus-visible {
 .body .copy {
   padding: 0 1.5em;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .body .copy span {
@@ -203,4 +205,19 @@ ul {
   width: min(760px, calc(100vw - 2rem));
   max-width: 100%;
   margin: 0.2rem auto 0.4rem;
+}
+
+@media (max-width: 700px) {
+  .mapBreakout {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+
+  .body img.mapImage {
+    width: 100%;
+    max-width: 100%;
+    margin: 0.4rem auto 0.5rem;
+  }
 }

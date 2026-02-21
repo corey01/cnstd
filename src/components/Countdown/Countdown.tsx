@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import style from "./Countdown.module.scss";
+import { useEffect, useState } from 'react';
+import style from './Countdown.module.scss';
 
 const WeddingCountdown = () => {
   const calculateTimeLeft = () => {
@@ -34,6 +34,10 @@ const WeddingCountdown = () => {
     return <h2>🎉 It's your wedding day!</h2>;
   }
 
+  const scrollToRsvp = () => {
+    document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className={style.countdown}>
       <p className={style.date}>
@@ -59,6 +63,9 @@ const WeddingCountdown = () => {
           <span>secs</span>
         </div>
       </div>
+      <button type="button" className={style.rsvpButton} onClick={scrollToRsvp}>
+        RSVP Now
+      </button>
     </div>
   );
 };

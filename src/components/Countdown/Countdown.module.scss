@@ -36,4 +36,23 @@
       }
     }
   }
+
+  .rsvpButton {
+    margin: 1rem auto 0.2rem;
+    border: 1px solid rgba(72, 72, 72, 0.35);
+    background: rgba(255, 255, 255, 0.5);
+    color: #2f2f2f;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+    padding: 0.55rem 1rem;
+  }
+
+  .rsvpButton:hover,
+  .rsvpButton:focus-visible {
+    border-color: var(--dusty-rose);
+    color: var(--dusty-rose);
+    background: rgba(255, 255, 255, 0.75);
+    outline: none;
+  }
 }

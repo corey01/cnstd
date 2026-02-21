@@ -1,0 +1,102 @@
+.toggle {
+  position: fixed;
+  top: 0.95rem;
+  right: 0.95rem;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  padding: 0.3rem;
+  border: 1px solid rgba(72, 72, 72, 0.35);
+  background: rgba(236, 236, 237, 0.92);
+  color: #272727;
+  border-radius: 0.45rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.toggle:focus,
+.toggle:focus-visible {
+  outline: none;
+  border-color: rgba(72, 72, 72, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.toggleLine {
+  position: absolute;
+  width: 1.15rem;
+  height: 1.5px;
+  background: #272727;
+  transition: transform 220ms ease, opacity 160ms ease;
+  transform-origin: center;
+}
+
+.toggleLine:nth-child(1) {
+  transform: translateY(-0.34rem);
+}
+
+.toggleLine:nth-child(2) {
+  transform: translateY(0);
+}
+
+.toggleLine:nth-child(3) {
+  transform: translateY(0.34rem);
+}
+
+.toggle.open .toggleLine:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.toggle.open .toggleLine:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.6);
+}
+
+.toggle.open .toggleLine:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(24, 24, 24, 0.34);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.panel {
+  margin: 4rem 0.9rem 0;
+  width: min(20rem, calc(100vw - 1.8rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.55rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(72, 72, 72, 0.28);
+  background: rgba(236, 236, 237, 0.98);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+}
+
+.linkButton {
+  width: 100%;
+  padding: 0.58rem 0.7rem;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: #2a2a2a;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.linkButton:hover,
+.linkButton:focus-visible {
+  border-color: rgba(210, 133, 159, 0.42);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--dusty-rose);
+  outline: none;
+}

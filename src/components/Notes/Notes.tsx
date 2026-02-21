@@ -22,10 +22,6 @@ const Notes = () => {
             If you are attending, you can include any allergies or dietary requirements in the RSVP
             form and we will pass everything to the venue team.
           </p>
-          <p>
-            We hope this gives everyone plenty of time to make arrangements, and we’re grateful for
-            your understanding.
-          </p>
         </div>
       </div>
     </div>

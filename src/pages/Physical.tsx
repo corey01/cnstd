@@ -9,28 +9,50 @@ import Gifts from "../components/Gifts/Gifts";
 import Menu from "../components/Menu/Menu";
 import Notes from "../components/Notes/Notes";
 import RSVP from "../components/RSVP/RSVP";
+import FloatingNav from "../components/Navigation/FloatingNav";
 
 const PhysicalPage = () => {
   return (
     <>
-      <Hero />
-      <OurWedding />
+      <FloatingNav />
+      <section id="home">
+        <Hero />
+      </section>
+      <section id="our-wedding">
+        <OurWedding />
+      </section>
       <Divider />
-      <DressCode />
+      <section id="dress-code">
+        <DressCode />
+      </section>
       <Divider />
-      <OrderOfTheDay />
+      <section id="order-of-day">
+        <OrderOfTheDay />
+      </section>
       <Divider />
-      <Accommodation />
+      <section id="accommodation">
+        <Accommodation />
+      </section>
       <Divider />
-      <Travel />
+      <section id="travel">
+        <Travel />
+      </section>
       <Divider />
-      <Menu />
+      <section id="menu">
+        <Menu />
+      </section>
       <Divider />
-      <Gifts />
+      <section id="gifts">
+        <Gifts />
+      </section>
       <Divider />
-      <Notes />
+      <section id="faq">
+        <Notes />
+      </section>
       <Divider />
-      <RSVP />
+      <section id="rsvp-section">
+        <RSVP />
+      </section>
     </>
   );
 };
