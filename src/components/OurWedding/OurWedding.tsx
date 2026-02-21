@@ -46,10 +46,11 @@ const OurWedding = () => {
           <p>Ceremony, food, and evening celebration all take place at Falcon Manor.</p>
 
           <p className="calendarLinks">
+            <p style={{ marginBottom: 0, fontWeight: 800 }}>Add to your calendar</p>
             <a href={googleCalendarUrl} target="_blank" rel="noreferrer">
-              Add to Google Calendar
+              Google Calendar
             </a>
-            {' · '}
+            <br />
             <a href="/norma-corey-wedding.ics" download>
               Download iCal (.ics)
             </a>
