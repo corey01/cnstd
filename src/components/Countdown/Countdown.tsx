@@ -31,7 +31,7 @@ const WeddingCountdown = () => {
   }, []);
 
   if (!timeLeft) {
-    return <h2>🎉 It's your wedding day!</h2>;
+    return <h2>Thank you for celebrating with us!</h2>;
   }
 
   const scrollToRsvp = () => {
